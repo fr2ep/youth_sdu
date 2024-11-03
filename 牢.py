@@ -10,8 +10,9 @@ def get_content(target):
     response=requests.get(url=target,headers=headers)
     soup=BeautifulSoup(response.text,"html.parser")
     texts=soup.find("div",attrs={"class":"art-main"})
-    content=texts.text
-    return content
+    if texts!=None:
+        content=texts.text
+        return content
 if __name__=="__main__":
     target=server
     response=requests.get(url=target,headers=headers)
@@ -20,11 +21,13 @@ if __name__=="__main__":
     pretitle=soup.find_all("div",attrs={"class":"gg-tit"},limit=3)
     for h in h2:
         print(h.text.strip())
-        print(server+h.a.get("href"))
+        if h.a!=None:
+            print(server+h.a.get("href"))
     for t in pretitle:
         title=t.find_next_sibling()
         titlea=title.find_all("a")
         for onepiece in titlea:
-            print(onepiece.text.replace(" ",""))
-            print(server+onepiece.get("href"))
-            print(get_content(server+onepiece.get("href")))
+            if onepiece!=None:
+                print(onepiece.text.replace(" ",""))
+                print(server+onepiece.get("href"))
+                print(get_content(server+onepiece.get("href")))
